@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Services App</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="config.js"></script>
+    <script src="api.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading" class="loading-screen">
+        <div class="spinner"></div>
+        <p>Loading Government Services...</p>
+    </div>
+
+    <!-- Home Screen -->
+    <div id="home-screen" class="screen active">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-landmark"></i>
+                <h1>Government Services</h1>
+            </div>
+            <button id="voice-toggle" class="voice-btn">
+                <i class="fas fa-microphone"></i>
+            </button>
+        </div>
+        
+        <div class="welcome-section">
+            <h2>Welcome to Digital Government Services</h2>
+            <p>Choose your role to continue</p>
+        </div>
+
+        <div class="role-selection">
+            <div class="role-card" onclick="showUserLogin()">
+                <div class="role-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3>Citizen</h3>
+                <p>Access government services and schemes</p>
+            </div>
+            
+            <div class="role-card" onclick="showOfficialLogin()">
+                <div class="role-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h3>Government Official</h3>
+                <p>Manage complaints and services</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Login Screen -->
+    <div id="user-login" class="screen">
+        <div class="auth-container">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            
+            <div class="auth-header">
+                <i class="fas fa-user-circle"></i>
+                <h2>Citizen Login</h2>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button class="tab-btn" onclick="switchTab('register')">Register</button>
+            </div>
+            
+            <div id="login-form" class="auth-form active">
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="login-phone" placeholder="Enter your phone number">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password">
+                </div>
+                <div class="input-group" style="display:flex;align-items:center;gap:8px;">
+                    <input type="checkbox" id="remember-user">
+                    <label for="remember-user">Remember me on this device</label>
+                </div>
+                <button class="primary-btn" onclick="userLogin()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+                <div class="divider">OR</div>
+                <button class="secondary-btn" onclick="sendOTP()">
+                    <i class="fas fa-sms"></i>
+                    Login with OTP
+                </button>
+            </div>
+            
+            <div id="register-form" class="auth-form">
+                <form onsubmit="registerUser(); return false;">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" id="reg-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Aadhaar Number</label>
+                        <input type="text" id="aadhaar" placeholder="Enter 12-digit Aadhaar number" required maxlength="12" pattern="\d{12}">
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="reg-phone" placeholder="Enter your phone number" required pattern="[0-9]{10}">
+                </div>
+                <div class="input-group">
+                    <label>Email (Optional)</label>
+                    <input type="email" id="reg-email" placeholder="Enter your email address">
+                </div>
+                <div class="input-group">
+                    <label>Address</label>
+                    <textarea id="reg-address" placeholder="Enter your address" rows="2"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="Enter your email">
+                </div>
+                <div class="input-group">
+                    <label>Address</label>
+                    <textarea id="address" placeholder="Enter your complete address"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="reg-password" placeholder="Create a password" required>
+                </div>
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="primary-btn" onclick="registerUser(); return false;">
+                    <i class="fas fa-user-plus"></i>
+                    Register
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official Login Screen -->
+    <div id="official-login" class="screen">
+        <div class="auth-container">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            
+            <div class="auth-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Official Login</h2>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="switchOfficialTab('login')">Login</button>
+                <button class="tab-btn" onclick="switchOfficialTab('register')">Register</button>
+            </div>
+            
+            <div id="official-login-form" class="auth-form active">
+                <div class="input-group">
+                    <label>Employee ID</label>
+                    <input type="text" id="emp-id" placeholder="Enter your employee ID">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="official-password" placeholder="Enter your password">
+                </div>
+                <div class="input-group" style="display:flex;align-items:center;gap:8px;">
+                    <input type="checkbox" id="remember-official">
+                    <label for="remember-official">Remember me on this device</label>
+                </div>
+                <button class="primary-btn" onclick="officialLogin()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+            </div>
+            
+            <div id="official-register-form" class="auth-form">
+                <div class="input-group">
+                    <label>Employee ID</label>
+                    <input type="text" id="new-emp-id" placeholder="Enter employee ID">
+                </div>
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="official-name" placeholder="Enter your full name">
+                </div>
+                <div class="input-group">
+                    <label>Department</label>
+                    <select id="department">
+                        <option value="">Select Department</option>
+                        <option value="education">Education</option>
+                        <option value="health">Health</option>
+                        <option value="police">Police</option>
+                        <option value="transport">Transport</option>
+                        <option value="revenue">Revenue</option>
+                        <option value="municipal">Municipal</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Category</label>
+                    <select id="official-category">
+                        <option value="">Select Category</option>
+                        <option value="1">Category 1 - Handle Complaints</option>
+                        <option value="2">Category 2 - Verify Resolution</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="new-official-password" placeholder="Create a password">
+                </div>
+                <button class="primary-btn" onclick="officialRegister()">
+                    <i class="fas fa-user-plus"></i>
+                    Register
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Dashboard -->
+    <div id="user-dashboard" class="screen">
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <h3 id="user-name">Welcome User</h3>
+                    <p id="user-location">Location</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="voice-assistant-btn" class="icon-btn">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button class="icon-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Status Dashboard -->
+        <div class="status-dashboard">
+            <h4>Your Updates</h4>
+            <div class="status-cards">
+                <div class="status-card">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div>
+                        <span class="count" id="pending-complaints">0</span>
+                        <p>Pending Complaints</p>
+                    </div>
+                </div>
+                <div class="status-card">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <span class="count" id="resolved-complaints">0</span>
+                        <p>Resolved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Blocks -->
+        <div class="service-blocks">
+            <div class="service-block schemes" onclick="showSchemes()">
+                <div class="service-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <h3>Government Schemes</h3>
+                <p>Find schemes for you</p>
+            </div>
+            
+            <div class="service-block complaints" onclick="showComplaints()">
+                <div class="service-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3>Complaints</h3>
+                <p>File and track complaints</p>
+            </div>
+            
+            <div class="service-block children" onclick="showChildren()">
+                <div class="service-icon">
+                    <i class="fas fa-child"></i>
+                </div>
+                <h3>Children</h3>
+                <p>Education & health tracking</p>
+            </div>
+            
+            <div class="service-block bills" onclick="showBillPayments()">
+                <div class="service-icon">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                </div>
+                <h3>Bill Payments</h3>
+                <p>Pay electricity, water bills</p>
+            </div>
+            
+            <div class="service-block documents" onclick="showDocuments()">
+                <div class="service-icon">
+                    <i class="fas fa-folder"></i>
+                </div>
+                <h3>Documents</h3>
+                <p>Store important documents</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Government Schemes Screen -->
+    <div id="schemes-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Government Schemes</h2>
+            <button class="voice-search-btn" onclick="startVoiceSearch()">
+                <i class="fas fa-microphone"></i>
+            </button>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="scheme-search" placeholder="Search for schemes...">
+                <button class="search-btn" onclick="searchSchemes()">Search</button>
+            </div>
+        </div>
+        
+        <div class="scheme-categories">
+            <button class="category-btn active" onclick="filterSchemes('all')">All</button>
+            <button class="category-btn" onclick="filterSchemes('central')">Central</button>
+            <button class="category-btn" onclick="filterSchemes('state')">State</button>
+            <button class="category-btn" onclick="filterSchemes('education')">Education</button>
+            <button class="category-btn" onclick="filterSchemes('health')">Health</button>
+            <button class="category-btn" onclick="filterSchemes('agriculture')">Agriculture</button>
+        </div>
+        
+        <div id="schemes-list" class="schemes-list">
+            <!-- Schemes will be populated by JavaScript -->
+        </div>
+        
+        <div class="quick-complaint">
+            <h4>Quick Complaint</h4>
+            <div class="complaint-input">
+                <textarea id="quick-complaint-text" placeholder="Describe your complaint..."></textarea>
+                <div class="complaint-actions">
+                    <button class="voice-btn" onclick="startVoiceComplaint()">
+                        <i class="fas fa-microphone"></i>
+                        Voice
+                    </button>
+                    <button class="submit-btn" onclick="submitQuickComplaint()">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complaints Screen -->
+    <div id="complaints-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>File a Complaint</h2>
+        </div>
+        
+        <div class="complaint-sectors">
+            <div class="sector-grid">
+                <div class="sector-card" onclick="selectSector('education')">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h4>Education</h4>
+                </div>
+                <div class="sector-card" onclick="selectSector('health')">
+                    <i class="fas fa-heartbeat"></i>
+                    <h4>Health</h4>
+                </div>
+                <div class="sector-card" onclick="selectSector('police')">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Police</h4>
+                </div>
+                <div class="sector-card" onclick="selectSector('transport')">
+                    <i class="fas fa-bus"></i>
+                    <h4>Transport</h4>
+                </div>
+                <div class="sector-card" onclick="selectSector('revenue')">
+                    <i class="fas fa-coins"></i>
+                    <h4>Revenue</h4>
+                </div>
+                <div class="sector-card" onclick="selectSector('municipal')">
+                    <i class="fas fa-city"></i>
+                    <h4>Municipal</h4>
+                </div>
+                <div class="sector-card" onclick="selectSector('water')">
+                    <i class="fas fa-tint"></i>
+                    <h4>Water Supply</h4>
+                </div>
+                <div class="sector-card" onclick="selectSector('electricity')">
+                    <i class="fas fa-bolt"></i>
+                    <h4>Electricity</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complaint Form -->
+    <div id="complaint-form" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2 id="complaint-sector-title">File Complaint</h2>
+        </div>
+        
+        <div class="form-container">
+            <div class="input-group">
+                <label>Subject</label>
+                <input type="text" id="complaint-subject" placeholder="Brief description of your complaint">
+            </div>
+            
+            <div class="input-group">
+                <label>Detailed Description</label>
+                <textarea id="complaint-description" placeholder="Describe your complaint in detail..."></textarea>
+            </div>
+            
+            <div class="input-group">
+                <label>Location</label>
+                <input type="text" id="complaint-location" placeholder="Where did this issue occur?">
+            </div>
+            
+            <div class="input-group">
+                <label>Priority</label>
+                <select id="complaint-priority">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                    <option value="urgent">Urgent</option>
+                </select>
+            </div>
+            
+            <div class="voice-input">
+                <button class="voice-btn" onclick="startComplaintVoice()">
+                    <i class="fas fa-microphone"></i>
+                    Record Voice Complaint
+                </button>
+                <div id="voice-status" class="voice-status"></div>
+            </div>
+            
+            <button class="primary-btn" onclick="submitComplaint()">
+                <i class="fas fa-paper-plane"></i>
+                Submit Complaint
+            </button>
+        </div>
+    </div>
+
+    <!-- Children Module -->
+    <div id="children-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Children Module</h2>
+        </div>
+        
+        <div class="children-dashboard">
+            <div class="child-card">
+                <div class="child-info">
+                    <div class="child-avatar">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <div class="child-details">
+                        <h4>Add Your Child</h4>
+                        <p>Track education and health</p>
+                    </div>
+                </div>
+                <button class="add-btn" onclick="showAddChild()">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            
+            <div class="children-stats">
+                <div class="stat-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <div>
+                        <span class="stat-number">85%</span>
+                        <p>Attendance Rate</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-syringe"></i>
+                    <div>
+                        <span class="stat-number">2</span>
+                        <p>Pending Vaccines</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="children-features">
+                <div class="feature-card" onclick="showAttendance()">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h4>Attendance Tracker</h4>
+                    <p>Monitor school attendance</p>
+                </div>
+                <div class="feature-card" onclick="showVaccination()">
+                    <i class="fas fa-shield-virus"></i>
+                    <h4>Vaccination</h4>
+                    <p>Track immunization schedule</p>
+                </div>
+                <div class="feature-card" onclick="showEducation()">
+                    <i class="fas fa-book"></i>
+                    <h4>Education Resources</h4>
+                    <p>Study materials and updates</p>
+                </div>
+                <div class="feature-card" onclick="showMeals()">
+                    <i class="fas fa-utensils"></i>
+                    <h4>Mid-Day Meals</h4>
+                    <p>Nutrition program status</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bill Payments -->
+    <div id="bills-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Bill Payments</h2>
+        </div>
+        
+        <div class="security-notice">
+            <i class="fas fa-shield-alt"></i>
+            <p>Secure payment gateway with fingerprint/PIN protection</p>
+        </div>
+        
+        <div class="bill-types">
+            <div class="bill-card" onclick="selectBillType('electricity')">
+                <i class="fas fa-bolt"></i>
+                <h4>Electricity</h4>
+                <p>Pay your power bills</p>
+            </div>
+            <div class="bill-card" onclick="selectBillType('water')">
+                <i class="fas fa-tint"></i>
+                <h4>Water</h4>
+                <p>Water supply bills</p>
+            </div>
+            <div class="bill-card" onclick="selectBillType('gas')">
+                <i class="fas fa-fire"></i>
+                <h4>Gas</h4>
+                <p>LPG and gas connections</p>
+            </div>
+            <div class="bill-card" onclick="selectBillType('phone')">
+                <i class="fas fa-phone"></i>
+                <h4>Phone/Internet</h4>
+                <p>Telecom services</p>
+            </div>
+        </div>
+        
+        <div class="recent-bills">
+            <h4>Recent Bills</h4>
+            <div class="bill-history">
+                <div class="bill-item">
+                    <div class="bill-info">
+                        <i class="fas fa-bolt"></i>
+                        <div>
+                            <h5>Electricity Bill</h5>
+                            <p>January 2024 - ₹1,250</p>
+                        </div>
+                    </div>
+                    <span class="status paid">Paid</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Documents Screen -->
+    <div id="documents-screen" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>My Documents</h2>
+            <button class="add-doc-btn" onclick="showAddDocument()">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        
+        <div class="document-categories">
+            <button class="doc-category active" onclick="filterDocuments('all')">All</button>
+            <button class="doc-category" onclick="filterDocuments('identity')">Identity</button>
+            <button class="doc-category" onclick="filterDocuments('certificates')">Certificates</button>
+            <button class="doc-category" onclick="filterDocuments('financial')">Financial</button>
+        </div>
+        
+        <div class="documents-grid">
+            <div class="document-card">
+                <div class="doc-icon">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <div class="doc-info">
+                    <h4>Aadhaar Card</h4>
+                    <p>Identity Document</p>
+                </div>
+                <div class="doc-actions">
+                    <button class="icon-btn" onclick="viewDocument('aadhaar')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="icon-btn" onclick="downloadDocument('aadhaar')">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official Dashboard -->
+    <div id="official-dashboard" class="screen">
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div class="avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="user-details">
+                    <h3 id="official-name">Official Name</h3>
+                    <p id="official-dept">Department</p>
+                </div>
+            </div>
+            <button class="icon-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+        
+        <div class="official-stats">
+            <div class="stat-card">
+                <i class="fas fa-inbox"></i>
+                <div>
+                    <span class="stat-number">12</span>
+                    <p>Pending Complaints</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <span class="stat-number">45</span>
+                    <p>Resolved This Month</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="complaint-categories">
+            <h4>Complaints by Category</h4>
+            <div class="category-list">
+                <div class="category-item" onclick="viewComplaints('education')">
+                    <i class="fas fa-graduation-cap"></i>
+                    <div>
+                        <h5>Education</h5>
+                        <span class="count">8 pending</span>
+                    </div>
+                </div>
+                <div class="category-item" onclick="viewComplaints('health')">
+                    <i class="fas fa-heartbeat"></i>
+                    <div>
+                        <h5>Health</h5>
+                        <span class="count">3 pending</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Assistant Modal -->
+    <div id="voice-modal" class="modal">
+        <div class="modal-content">
+            <div class="voice-animation">
+                <div class="voice-circle"></div>
+                <div class="voice-circle"></div>
+                <div class="voice-circle"></div>
+            </div>
+            <h3>Voice Assistant</h3>
+            <p id="voice-text">Listening...</p>
+            <button class="close-btn" onclick="closeVoiceModal()">Done</button>
+        </div>
+    </div>
+
+    <!-- Security Modal -->
+    <div id="security-modal" class="modal">
+        <div class="modal-content">
+            <h3>Security Verification</h3>
+            <p>Please verify your identity to proceed with payment</p>
+            <div class="security-options">
+                <button class="security-btn" onclick="authenticateFingerprint()">
+                    <i class="fas fa-fingerprint"></i>
+                    Fingerprint
+                </button>
+                <button class="security-btn" onclick="showPinInput()">
+                    <i class="fas fa-lock"></i>
+                    PIN
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Document Modal -->
+    <div id="add-doc-modal" class="modal">
+        <div class="modal-content">
+            <h3>Add Documents</h3>
+            <div id="drop-area" class="drop-area" style="border:2px dashed #ccc;border-radius:10px;padding:20px;text-align:center;margin:10px 0;">
+                <p>Drag & drop files here</p>
+                <p>or</p>
+                <button id="browse-files" class="secondary-btn" type="button">Browse files</button>
+                <input type="file" id="file-input" multiple style="display:none" />
+            </div>
+            <div id="selected-files" style="max-height:200px;overflow:auto;margin-top:10px;"></div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:15px;">
+                <button class="secondary-btn" type="button" onclick="closeAddDocument()">Cancel</button>
+                <button class="primary-btn" type="button" onclick="confirmAddDocuments()">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+    "documents": [
+        {
+            "id": 1,
+            "user_id": "2",
+            "name": "dplab_final2.ipynb",
+            "original_name": "dplab_final2.ipynb",
+            "path": "uploads\\2/dplab_final2.ipynb",
+            "type": "other",
+            "uploadDate": "2025-09-09"
+        },
+        {
+            "id": 2,
+            "user_id": "2",
+            "name": "Assignment_51.docx",
+            "original_name": "Assignment_51.docx",
+            "path": "uploads\\2/Assignment_51.docx",
+            "type": "other",
+            "uploadDate": "2025-09-09"
+        }
+    ]
+}
