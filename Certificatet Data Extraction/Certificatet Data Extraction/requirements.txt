@@ -1,5 +1,0 @@
-azure-ai-formrecognizer
-azure-core
-python-dotenv
-google-generativeai
-pandas
