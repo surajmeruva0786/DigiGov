@@ -50,11 +50,15 @@ import voiceExtraction
 
 UPLOAD_DIR = 'uploads'
 DOCS_DB = 'documents.json'
+COMPLAINTS_DB = 'complaints.json'
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 if not os.path.exists(DOCS_DB):
     with open(DOCS_DB, 'w') as f:
         json.dump({"documents": []}, f, indent=4)
+if not os.path.exists(COMPLAINTS_DB):
+    with open(COMPLAINTS_DB, 'w') as f:
+        json.dump({"complaints": []}, f, indent=4)
 
 def load_documents():
     try:
@@ -65,6 +69,17 @@ def load_documents():
 
 def save_documents(data):
     with open(DOCS_DB, 'w') as f:
+        json.dump(data, f, indent=4)
+
+def load_complaints():
+    try:
+        with open(COMPLAINTS_DB, 'r') as f:
+            return json.load(f)
+    except Exception:
+        return {"complaints": []}
+
+def save_complaints(data):
+    with open(COMPLAINTS_DB, 'w') as f:
         json.dump(data, f, indent=4)
 
 @app.route('/api/health', methods=['GET'])
@@ -124,6 +139,89 @@ def handle_login():
             "success": False,
             "message": "Login failed. Please try again."
         }), 500
+
+# Complaints API
+@app.route('/api/complaints', methods=['GET'])
+def list_complaints():
+    try:
+        user_id = request.args.get('user_id') or request.args.get('username')
+        data = load_complaints()
+        items = data.get('complaints', [])
+        if user_id:
+            items = [c for c in items if str(c.get('userId')) == str(user_id) or str(c.get('username')) == str(user_id)]
+        return jsonify({"success": True, "complaints": items})
+    except Exception as e:
+        print('List complaints error:', e)
+        return jsonify({"success": False, "complaints": []}), 500
+
+@app.route('/api/complaints', methods=['POST'])
+def create_complaint():
+    try:
+        data = request.get_json() or {}
+        required = ['userId', 'sector', 'subject', 'description', 'location', 'priority']
+        missing = [k for k in required if not data.get(k)]
+        if missing:
+            return jsonify({"success": False, "message": f"Missing: {', '.join(missing)}"}), 400
+        store = load_complaints()
+        items = store.get('complaints', [])
+        new_id = (max([c.get('id', 0) for c in items]) + 1) if items else 1
+        record = {
+            "id": new_id,
+            "userId": data['userId'],
+            "sector": data['sector'],
+            "subject": data['subject'],
+            "description": data['description'],
+            "location": data['location'],
+            "priority": data['priority'],
+            "status": 'pending',
+            "createdAt": __import__('datetime').datetime.now().isoformat()
+        }
+        items.append(record)
+        store['complaints'] = items
+        save_complaints(store)
+        return jsonify({"success": True, "complaint": record})
+    except Exception as e:
+        print('Create complaint error:', e)
+        traceback.print_exc()
+        return jsonify({"success": False, "message": "Failed to create complaint"}), 500
+
+# Notifications API (simple stub)
+@app.route('/api/notifications', methods=['GET'])
+def get_notifications():
+    try:
+        user_id = request.args.get('user_id') or 'anonymous'
+        notifs = [
+            {"id": 1, "title": "Welcome", "message": "Welcome to DigiGov!", "userId": user_id},
+            {"id": 2, "title": "Tips", "message": "You can upload important documents in Documents tab.", "userId": user_id}
+        ]
+        return jsonify({"success": True, "notifications": notifs})
+    except Exception as e:
+        print('Notifications error:', e)
+        return jsonify({"success": False, "notifications": []}), 500
+
+# Location API
+@app.route('/api/location', methods=['GET'])
+def get_location():
+    try:
+        coords = gps.get_location()
+        if coords:
+            return jsonify({"success": True, "lat": coords[0], "lng": coords[1]})
+        return jsonify({"success": False, "message": "Location unavailable"}), 200
+    except Exception as e:
+        print('Location error:', e)
+        return jsonify({"success": False, "message": "Failed to get location"}), 500
+
+# Voice processing API (stub)
+@app.route('/api/voice', methods=['POST'])
+def process_voice():
+    try:
+        if 'audio' not in request.files:
+            return jsonify({"success": False, "message": "No audio provided"}), 400
+        # For now, just return a placeholder transcript
+        return jsonify({"success": True, "transcript": "Transcription is not implemented in this demo."})
+    except Exception as e:
+        print('Voice error:', e)
+        return jsonify({"success": False, "message": "Voice processing failed"}), 500
 
 @app.route('/api/documents', methods=['GET'])
 def list_documents():
