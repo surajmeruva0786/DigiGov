@@ -239,7 +239,7 @@
             </div>
         </div>
 
-        <!-- Status Dashboard -->
+        <!-- Enhanced Status Dashboard -->
         <div class="status-dashboard">
             <h4>Your Updates</h4>
             <div class="status-cards">
@@ -257,6 +257,43 @@
                         <p>Resolved</p>
                     </div>
                 </div>
+                <div class="status-card">
+                    <i class="fas fa-heart"></i>
+                    <div>
+                        <span class="count" id="favorite-schemes">0</span>
+                        <p>Favorite Schemes</p>
+                    </div>
+                </div>
+                <div class="status-card">
+                    <i class="fas fa-file-alt"></i>
+                    <div>
+                        <span class="count" id="stored-documents">0</span>
+                        <p>Documents</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h4>Quick Actions</h4>
+            <div class="actions-grid">
+                <button class="quick-action-btn" onclick="showSchemes()">
+                    <i class="fas fa-gift"></i>
+                    <span>Find Schemes</span>
+                </button>
+                <button class="quick-action-btn" onclick="trackComplaint()">
+                    <i class="fas fa-search"></i>
+                    <span>Track Complaint</span>
+                </button>
+                <button class="quick-action-btn" onclick="showDocuments()">
+                    <i class="fas fa-folder"></i>
+                    <span>View Documents</span>
+                </button>
+                <button class="quick-action-btn" onclick="showNearbyServices()">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Nearby Services</span>
+                </button>
             </div>
         </div>
 
@@ -304,7 +341,7 @@
         </div>
     </div>
 
-    <!-- Government Schemes Screen -->
+    <!-- Enhanced Government Schemes Screen -->
     <div id="schemes-screen" class="screen">
         <div class="screen-header">
             <button class="back-btn" onclick="goBack()">
@@ -331,10 +368,93 @@
             <button class="category-btn" onclick="filterSchemes('education')">Education</button>
             <button class="category-btn" onclick="filterSchemes('health')">Health</button>
             <button class="category-btn" onclick="filterSchemes('agriculture')">Agriculture</button>
+            <button class="category-btn" onclick="filterSchemes('women')">Women</button>
+            <button class="category-btn" onclick="filterSchemes('elderly')">Elderly</button>
+            <button class="category-btn" onclick="filterSchemes('housing')">Housing</button>
+            <button class="category-btn" onclick="filterSchemes('employment')">Employment</button>
+            <button class="category-btn" onclick="filterSchemes('disability')">Disability</button>
+            <button class="category-btn" onclick="filterSchemes('financial')">Financial</button>
         </div>
         
-        <div id="schemes-list" class="schemes-list">
+        <div class="scheme-filters">
+            <div class="filter-row">
+                <select id="age-filter" onchange="applyAdvancedFilters()">
+                    <option value="">All Ages</option>
+                    <option value="0-5">0-5 years</option>
+                    <option value="6-17">6-17 years</option>
+                    <option value="18-35">18-35 years</option>
+                    <option value="36-59">36-59 years</option>
+                    <option value="60+">60+ years</option>
+                </select>
+                <select id="income-filter" onchange="applyAdvancedFilters()">
+                    <option value="">All Income Levels</option>
+                    <option value="bpl">Below Poverty Line</option>
+                    <option value="apl">Above Poverty Line</option>
+                    <option value="low">Low Income (₹0-2L)</option>
+                    <option value="middle">Middle Income (₹2-8L)</option>
+                    <option value="high">High Income (₹8L+)</option>
+                </select>
+                <select id="gender-filter" onchange="applyAdvancedFilters()">
+                    <option value="">All Genders</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="transgender">Transgender</option>
+                </select>
+            </div>
+            <div class="filter-actions">
+                <button class="filter-btn" onclick="showEligibilityChecker()">
+                    <i class="fas fa-check-circle"></i> Check Eligibility
+                </button>
+                <button class="filter-btn" onclick="showFavoriteSchemes()">
+                    <i class="fas fa-heart"></i> Favorites
+                </button>
+                <button class="filter-btn" onclick="showSchemeComparison()">
+                    <i class="fas fa-balance-scale"></i> Compare
+                </button>
+            </div>
+        </div>
+
+        <div class="schemes-tools">
+            <div class="schemes-sorting">
+                <label>Sort by:</label>
+                <select id="scheme-sort" onchange="sortSchemes()">
+                    <option value="relevance">Relevance</option>
+                    <option value="amount-high">Amount (High to Low)</option>
+                    <option value="amount-low">Amount (Low to High)</option>
+                    <option value="recent">Recently Added</option>
+                    <option value="popular">Most Popular</option>
+                    <option value="deadline">Application Deadline</option>
+                </select>
+            </div>
+            <div class="schemes-view">
+                <button class="view-btn active" onclick="switchSchemeView('grid')">
+                    <i class="fas fa-th"></i>
+                </button>
+                <button class="view-btn" onclick="switchSchemeView('list')">
+                    <i class="fas fa-list"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div id="schemes-list" class="schemes-list grid-view">
             <!-- Schemes will be populated by JavaScript -->
+        </div>
+        
+        <div class="schemes-stats">
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-number" id="total-schemes">0</span>
+                    <span class="stat-label">Total Schemes</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="eligible-schemes">0</span>
+                    <span class="stat-label">Eligible for You</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="applied-schemes">0</span>
+                    <span class="stat-label">Applied</span>
+                </div>
+            </div>
         </div>
         
         <div class="quick-complaint">
@@ -354,7 +474,7 @@
         </div>
     </div>
 
-    <!-- Complaints Screen -->
+    <!-- Enhanced Complaints Screen -->
     <div id="complaints-screen" class="screen">
         <div class="screen-header">
             <button class="back-btn" onclick="goBack()">
@@ -363,45 +483,104 @@
             <h2>File a Complaint</h2>
         </div>
         
+        <div class="complaints-overview">
+            <div class="complaint-stats">
+                <div class="stat-box">
+                    <i class="fas fa-clock"></i>
+                    <span class="count" id="pending-count">0</span>
+                    <p>Pending</p>
+                </div>
+                <div class="stat-box">
+                    <i class="fas fa-check"></i>
+                    <span class="count" id="resolved-count">0</span>
+                    <p>Resolved</p>
+                </div>
+                <div class="stat-box">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span class="count" id="urgent-count">0</span>
+                    <p>Urgent</p>
+                </div>
+            </div>
+            <div class="complaint-actions">
+                <button class="action-btn" onclick="showComplaintHistory()">
+                    <i class="fas fa-history"></i> My Complaints
+                </button>
+                <button class="action-btn" onclick="trackComplaint()">
+                    <i class="fas fa-search"></i> Track Complaint
+                </button>
+                <button class="action-btn" onclick="showAnonymousOption()">
+                    <i class="fas fa-user-secret"></i> Anonymous
+                </button>
+            </div>
+        </div>
+        
         <div class="complaint-sectors">
             <div class="sector-grid">
                 <div class="sector-card" onclick="selectSector('education')">
                     <i class="fas fa-graduation-cap"></i>
                     <h4>Education</h4>
+                    <p>Schools, Teachers, Facilities</p>
                 </div>
                 <div class="sector-card" onclick="selectSector('health')">
                     <i class="fas fa-heartbeat"></i>
                     <h4>Health</h4>
+                    <p>Hospitals, Doctors, Medicine</p>
                 </div>
                 <div class="sector-card" onclick="selectSector('police')">
                     <i class="fas fa-shield-alt"></i>
                     <h4>Police</h4>
+                    <p>Safety, Crime, Traffic</p>
                 </div>
                 <div class="sector-card" onclick="selectSector('transport')">
                     <i class="fas fa-bus"></i>
                     <h4>Transport</h4>
+                    <p>Roads, Public Transport</p>
                 </div>
                 <div class="sector-card" onclick="selectSector('revenue')">
                     <i class="fas fa-coins"></i>
                     <h4>Revenue</h4>
+                    <p>Tax, Land Records</p>
                 </div>
                 <div class="sector-card" onclick="selectSector('municipal')">
                     <i class="fas fa-city"></i>
                     <h4>Municipal</h4>
+                    <p>Waste, Street Lights</p>
                 </div>
                 <div class="sector-card" onclick="selectSector('water')">
                     <i class="fas fa-tint"></i>
                     <h4>Water Supply</h4>
+                    <p>Connections, Quality</p>
                 </div>
                 <div class="sector-card" onclick="selectSector('electricity')">
                     <i class="fas fa-bolt"></i>
                     <h4>Electricity</h4>
+                    <p>Power Cuts, Billing</p>
+                </div>
+                <div class="sector-card" onclick="selectSector('food')">
+                    <i class="fas fa-utensils"></i>
+                    <h4>Food & PDS</h4>
+                    <p>Ration, Food Safety</p>
+                </div>
+                <div class="sector-card" onclick="selectSector('housing')">
+                    <i class="fas fa-home"></i>
+                    <h4>Housing</h4>
+                    <p>Construction, Permits</p>
+                </div>
+                <div class="sector-card" onclick="selectSector('environment')">
+                    <i class="fas fa-leaf"></i>
+                    <h4>Environment</h4>
+                    <p>Pollution, Waste</p>
+                </div>
+                <div class="sector-card" onclick="selectSector('social')">
+                    <i class="fas fa-users"></i>
+                    <h4>Social Welfare</h4>
+                    <p>Pensions, Benefits</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Complaint Form -->
+    <!-- Enhanced Complaint Form -->
     <div id="complaint-form" class="screen">
         <div class="screen-header">
             <button class="back-btn" onclick="goBack()">
@@ -424,6 +603,9 @@
             <div class="input-group">
                 <label>Location</label>
                 <input type="text" id="complaint-location" placeholder="Where did this issue occur?">
+                <button class="location-btn" onclick="getCurrentLocation()">
+                    <i class="fas fa-map-marker-alt"></i> Use Current Location
+                </button>
             </div>
             
             <div class="input-group">
@@ -433,7 +615,40 @@
                     <option value="medium" selected>Medium</option>
                     <option value="high">High</option>
                     <option value="urgent">Urgent</option>
+                    <option value="emergency">Emergency</option>
                 </select>
+            </div>
+
+            <div class="input-group">
+                <label>Complaint Type</label>
+                <select id="complaint-type">
+                    <option value="service">Service Related</option>
+                    <option value="corruption">Corruption</option>
+                    <option value="delay">Delay in Service</option>
+                    <option value="quality">Quality Issue</option>
+                    <option value="behavior">Staff Behavior</option>
+                    <option value="infrastructure">Infrastructure</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Attachments</label>
+                <div class="attachment-area">
+                    <input type="file" id="complaint-attachments" multiple accept="image/*,video/*,audio/*,.pdf,.doc,.docx">
+                    <label for="complaint-attachments" class="attachment-btn">
+                        <i class="fas fa-paperclip"></i> Add Photos/Videos/Documents
+                    </label>
+                    <div id="attachment-preview"></div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Anonymous Complaint</label>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="anonymous-complaint">
+                    <label for="anonymous-complaint">File this complaint anonymously</label>
+                </div>
             </div>
             
             <div class="voice-input">
@@ -451,29 +666,31 @@
         </div>
     </div>
 
-    <!-- Children Module -->
+    <!-- Enhanced Children Module -->
     <div id="children-screen" class="screen">
         <div class="screen-header">
             <button class="back-btn" onclick="goBack()">
                 <i class="fas fa-arrow-left"></i>
             </button>
             <h2>Children Module</h2>
+            <button class="add-child-btn" onclick="showAddChild()">
+                <i class="fas fa-plus"></i>
+            </button>
         </div>
         
         <div class="children-dashboard">
-            <div class="child-card">
-                <div class="child-info">
-                    <div class="child-avatar">
-                        <i class="fas fa-child"></i>
-                    </div>
-                    <div class="child-details">
-                        <h4>Add Your Child</h4>
-                        <p>Track education and health</p>
+            <div class="children-list" id="children-list">
+                <div class="child-card add-child" onclick="showAddChild()">
+                    <div class="child-info">
+                        <div class="child-avatar">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div class="child-details">
+                            <h4>Add Your Child</h4>
+                            <p>Track education and health</p>
+                        </div>
                     </div>
                 </div>
-                <button class="add-btn" onclick="showAddChild()">
-                    <i class="fas fa-plus"></i>
-                </button>
             </div>
             
             <div class="children-stats">
@@ -481,7 +698,7 @@
                     <i class="fas fa-calendar-check"></i>
                     <div>
                         <span class="stat-number">85%</span>
-                        <p>Attendance Rate</p>
+                        <p>Avg Attendance</p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -491,97 +708,240 @@
                         <p>Pending Vaccines</p>
                     </div>
                 </div>
+                <div class="stat-card">
+                    <i class="fas fa-book-open"></i>
+                    <div>
+                        <span class="stat-number">8</span>
+                        <p>Homework Tasks</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-trophy"></i>
+                    <div>
+                        <span class="stat-number">B+</span>
+                        <p>Avg Grade</p>
+                    </div>
+                </div>
             </div>
             
             <div class="children-features">
                 <div class="feature-card" onclick="showAttendance()">
                     <i class="fas fa-calendar-alt"></i>
                     <h4>Attendance Tracker</h4>
-                    <p>Monitor school attendance</p>
+                    <p>Monitor daily school attendance</p>
                 </div>
                 <div class="feature-card" onclick="showVaccination()">
                     <i class="fas fa-shield-virus"></i>
-                    <h4>Vaccination</h4>
+                    <h4>Vaccination Schedule</h4>
                     <p>Track immunization schedule</p>
                 </div>
                 <div class="feature-card" onclick="showEducation()">
                     <i class="fas fa-book"></i>
                     <h4>Education Resources</h4>
-                    <p>Study materials and updates</p>
+                    <p>Study materials and resources</p>
                 </div>
                 <div class="feature-card" onclick="showMeals()">
                     <i class="fas fa-utensils"></i>
                     <h4>Mid-Day Meals</h4>
-                    <p>Nutrition program status</p>
+                    <p>Nutrition program tracking</p>
+                </div>
+                <div class="feature-card" onclick="showHomework()">
+                    <i class="fas fa-clipboard-check"></i>
+                    <h4>Homework Tracker</h4>
+                    <p>Track assignments and tasks</p>
+                </div>
+                <div class="feature-card" onclick="showTeacherChat()">
+                    <i class="fas fa-comments"></i>
+                    <h4>Teacher Communication</h4>
+                    <p>Chat with teachers</p>
+                </div>
+                <div class="feature-card" onclick="showPerformance()">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Performance Analytics</h4>
+                    <p>View academic progress</p>
+                </div>
+                <div class="feature-card" onclick="showEvents()">
+                    <i class="fas fa-calendar-star"></i>
+                    <h4>School Events</h4>
+                    <p>Upcoming activities</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bill Payments -->
+    <!-- Enhanced Bill Payments -->
     <div id="bills-screen" class="screen">
         <div class="screen-header">
             <button class="back-btn" onclick="goBack()">
                 <i class="fas fa-arrow-left"></i>
             </button>
             <h2>Bill Payments</h2>
+            <button class="scan-btn" onclick="scanQRCode()">
+                <i class="fas fa-qrcode"></i>
+            </button>
         </div>
         
         <div class="security-notice">
             <i class="fas fa-shield-alt"></i>
-            <p>Secure payment gateway with fingerprint/PIN protection</p>
+            <p>Secure payment gateway with biometric authentication</p>
+        </div>
+
+        <!-- Bill Summary -->
+        <div class="bill-summary">
+            <div class="summary-item">
+                <span class="amount">₹2,450</span>
+                <span class="label">This Month</span>
+            </div>
+            <div class="summary-item">
+                <span class="amount">₹28,340</span>
+                <span class="label">This Year</span>
+            </div>
+            <div class="summary-item overdue">
+                <span class="amount">₹850</span>
+                <span class="label">Overdue</span>
+            </div>
         </div>
         
         <div class="bill-types">
             <div class="bill-card" onclick="selectBillType('electricity')">
                 <i class="fas fa-bolt"></i>
                 <h4>Electricity</h4>
-                <p>Pay your power bills</p>
+                <p>Power bills & connections</p>
+                <span class="due-amount">₹1,250 due</span>
             </div>
             <div class="bill-card" onclick="selectBillType('water')">
                 <i class="fas fa-tint"></i>
                 <h4>Water</h4>
                 <p>Water supply bills</p>
+                <span class="due-amount">₹450 due</span>
             </div>
             <div class="bill-card" onclick="selectBillType('gas')">
                 <i class="fas fa-fire"></i>
                 <h4>Gas</h4>
                 <p>LPG and gas connections</p>
+                <span class="due-amount">₹750 due</span>
             </div>
             <div class="bill-card" onclick="selectBillType('phone')">
                 <i class="fas fa-phone"></i>
                 <h4>Phone/Internet</h4>
                 <p>Telecom services</p>
+                <span class="due-amount">₹899 due</span>
+            </div>
+            <div class="bill-card" onclick="selectBillType('insurance')">
+                <i class="fas fa-shield-alt"></i>
+                <h4>Insurance</h4>
+                <p>Life & health insurance</p>
+                <span class="due-amount">₹2,500 due</span>
+            </div>
+            <div class="bill-card" onclick="selectBillType('tax')">
+                <i class="fas fa-receipt"></i>
+                <h4>Property Tax</h4>
+                <p>Municipal taxes</p>
+                <span class="due-amount">₹3,200 due</span>
+            </div>
+            <div class="bill-card" onclick="selectBillType('loan')">
+                <i class="fas fa-credit-card"></i>
+                <h4>Loans/EMI</h4>
+                <p>Personal & home loans</p>
+                <span class="due-amount">₹15,000 due</span>
+            </div>
+            <div class="bill-card" onclick="selectBillType('subscription')">
+                <i class="fas fa-tv"></i>
+                <h4>Subscriptions</h4>
+                <p>DTH, streaming services</p>
+                <span class="due-amount">₹650 due</span>
+            </div>
+        </div>
+
+        <!-- Payment Options -->
+        <div class="payment-options">
+            <h4>Payment Methods</h4>
+            <div class="payment-methods">
+                <button class="payment-method" onclick="selectPaymentMethod('upi')">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>UPI</span>
+                </button>
+                <button class="payment-method" onclick="selectPaymentMethod('card')">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Card</span>
+                </button>
+                <button class="payment-method" onclick="selectPaymentMethod('netbanking')">
+                    <i class="fas fa-university"></i>
+                    <span>Net Banking</span>
+                </button>
+                <button class="payment-method" onclick="selectPaymentMethod('wallet')">
+                    <i class="fas fa-wallet"></i>
+                    <span>Wallet</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Auto Pay Settings -->
+        <div class="autopay-settings">
+            <h4>Auto Pay Settings</h4>
+            <div class="autopay-options">
+                <button class="autopay-btn" onclick="setupAutoPay()">
+                    <i class="fas fa-sync-alt"></i>
+                    Set up Auto Pay
+                </button>
+                <button class="reminder-btn" onclick="setupReminders()">
+                    <i class="fas fa-bell"></i>
+                    Payment Reminders
+                </button>
             </div>
         </div>
         
         <div class="recent-bills">
-            <h4>Recent Bills</h4>
-            <div class="bill-history">
+            <h4>Recent Transactions</h4>
+            <div class="bill-history" id="bill-history">
                 <div class="bill-item">
                     <div class="bill-info">
                         <i class="fas fa-bolt"></i>
                         <div>
                             <h5>Electricity Bill</h5>
-                            <p>January 2024 - ₹1,250</p>
+                            <p>January 2024 - Consumer: 1234567890</p>
                         </div>
                     </div>
-                    <span class="status paid">Paid</span>
+                    <div class="bill-status">
+                        <span class="amount">₹1,250</span>
+                        <span class="status paid">Paid</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Documents Screen -->
+    <!-- Enhanced Documents Screen -->
     <div id="documents-screen" class="screen">
         <div class="screen-header">
             <button class="back-btn" onclick="goBack()">
                 <i class="fas fa-arrow-left"></i>
             </button>
             <h2>My Documents</h2>
-            <button class="add-doc-btn" onclick="showAddDocument()">
-                <i class="fas fa-plus"></i>
-            </button>
+            <div class="header-actions">
+                <button class="scan-doc-btn" onclick="scanDocument()">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <button class="add-doc-btn" onclick="showAddDocument()">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Document Stats -->
+        <div class="document-stats">
+            <div class="doc-stat">
+                <span class="count" id="total-docs">0</span>
+                <span class="label">Total Documents</span>
+            </div>
+            <div class="doc-stat">
+                <span class="count" id="verified-docs">0</span>
+                <span class="label">Verified</span>
+            </div>
+            <div class="doc-stat">
+                <span class="count" id="expiring-docs">0</span>
+                <span class="label">Expiring Soon</span>
+            </div>
         </div>
         
         <div class="document-categories">
@@ -589,30 +949,87 @@
             <button class="doc-category" onclick="filterDocuments('identity')">Identity</button>
             <button class="doc-category" onclick="filterDocuments('certificates')">Certificates</button>
             <button class="doc-category" onclick="filterDocuments('financial')">Financial</button>
+            <button class="doc-category" onclick="filterDocuments('medical')">Medical</button>
+            <button class="doc-category" onclick="filterDocuments('property')">Property</button>
+            <button class="doc-category" onclick="filterDocuments('family')">Family</button>
+        </div>
+
+        <!-- Document Tools -->
+        <div class="document-tools">
+            <div class="search-docs">
+                <input type="text" id="doc-search" placeholder="Search documents...">
+                <button onclick="searchDocuments()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="doc-actions">
+                <button class="doc-tool" onclick="shareDocuments()">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+                <button class="doc-tool" onclick="backupDocuments()">
+                    <i class="fas fa-cloud-upload-alt"></i> Backup
+                </button>
+                <button class="doc-tool" onclick="printDocuments()">
+                    <i class="fas fa-print"></i> Print
+                </button>
+            </div>
         </div>
         
-        <div class="documents-grid">
-            <div class="document-card">
+        <div class="documents-grid" id="documents-grid">
+            <div class="document-card sample">
+                <div class="doc-status verified">
+                    <i class="fas fa-check-circle"></i>
+                </div>
                 <div class="doc-icon">
                     <i class="fas fa-id-card"></i>
                 </div>
                 <div class="doc-info">
                     <h4>Aadhaar Card</h4>
                     <p>Identity Document</p>
+                    <span class="expiry">Valid until: 2030</span>
                 </div>
                 <div class="doc-actions">
-                    <button class="icon-btn" onclick="viewDocument('aadhaar')">
+                    <button class="icon-btn" onclick="viewDocument('aadhaar')" title="View">
                         <i class="fas fa-eye"></i>
                     </button>
-                    <button class="icon-btn" onclick="downloadDocument('aadhaar')">
+                    <button class="icon-btn" onclick="shareDocument('aadhaar')" title="Share">
+                        <i class="fas fa-share"></i>
+                    </button>
+                    <button class="icon-btn" onclick="downloadDocument('aadhaar')" title="Download">
                         <i class="fas fa-download"></i>
                     </button>
+                    <button class="icon-btn" onclick="editDocument('aadhaar')" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Document Templates -->
+        <div class="document-templates">
+            <h4>Quick Add Templates</h4>
+            <div class="template-grid">
+                <div class="template-card" onclick="addTemplateDocument('pan')">
+                    <i class="fas fa-id-badge"></i>
+                    <span>PAN Card</span>
+                </div>
+                <div class="template-card" onclick="addTemplateDocument('passport')">
+                    <i class="fas fa-passport"></i>
+                    <span>Passport</span>
+                </div>
+                <div class="template-card" onclick="addTemplateDocument('license')">
+                    <i class="fas fa-id-card-alt"></i>
+                    <span>License</span>
+                </div>
+                <div class="template-card" onclick="addTemplateDocument('insurance')">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Insurance</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Official Dashboard -->
+    <!-- Enhanced Official Dashboard -->
     <div id="official-dashboard" class="screen">
         <div class="dashboard-header">
             <div class="user-info">
@@ -622,46 +1039,770 @@
                 <div class="user-details">
                     <h3 id="official-name">Official Name</h3>
                     <p id="official-dept">Department</p>
+                    <p id="official-role">Senior Officer</p>
                 </div>
             </div>
-            <button class="icon-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="showNotifications()" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">5</span>
+                </button>
+                <button class="icon-btn" onclick="showMessages()" title="Messages">
+                    <i class="fas fa-envelope"></i>
+                    <span class="message-badge">3</span>
+                </button>
+                <button class="icon-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Performance Overview -->
+        <div class="performance-overview">
+            <h4>Performance Overview</h4>
+            <div class="performance-cards">
+                <div class="perf-card complaints">
+                    <div class="perf-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="perf-data">
+                        <span class="perf-number" id="total-complaints">127</span>
+                        <span class="perf-label">Total Complaints</span>
+                        <div class="perf-breakdown">
+                            <span class="pending" id="pending-complaints">23 Pending</span>
+                            <span class="resolved" id="resolved-complaints">104 Resolved</span>
+                        </div>
+                    </div>
+                    <div class="perf-trend up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+12%</span>
+                    </div>
+                </div>
+                
+                <div class="perf-card schemes">
+                    <div class="perf-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="perf-data">
+                        <span class="perf-number" id="scheme-applications">89</span>
+                        <span class="perf-label">Scheme Applications</span>
+                        <div class="perf-breakdown">
+                            <span class="pending" id="pending-applications">15 Pending</span>
+                            <span class="approved" id="approved-applications">74 Approved</span>
+                        </div>
+                    </div>
+                    <div class="perf-trend up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+8%</span>
+                    </div>
+                </div>
+                
+                <div class="perf-card citizens">
+                    <div class="perf-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="perf-data">
+                        <span class="perf-number" id="citizens-served">342</span>
+                        <span class="perf-label">Citizens Served</span>
+                        <div class="perf-breakdown">
+                            <span class="today" id="served-today">12 Today</span>
+                            <span class="week" id="served-week">78 This Week</span>
+                        </div>
+                    </div>
+                    <div class="perf-trend up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+15%</span>
+                    </div>
+                </div>
+                
+                <div class="perf-card efficiency">
+                    <div class="perf-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="perf-data">
+                        <span class="perf-number" id="efficiency-score">92%</span>
+                        <span class="perf-label">Efficiency Score</span>
+                        <div class="perf-breakdown">
+                            <span class="avg-time" id="avg-resolution">2.3 days avg</span>
+                            <span class="target" id="target-met">95% target met</span>
+                        </div>
+                    </div>
+                    <div class="perf-trend up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+3%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Panel -->
+        <div class="quick-actions-panel">
+            <h4>Quick Actions</h4>
+            <div class="quick-actions-grid">
+                <button class="quick-action" onclick="showComplaintManagement()">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Manage Complaints</span>
+                    <small>23 pending review</small>
+                </button>
+                <button class="quick-action" onclick="showSchemeApplications()">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Scheme Applications</span>
+                    <small>15 need approval</small>
+                </button>
+                <button class="quick-action" onclick="showCitizenRequests()">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Citizen Requests</span>
+                    <small>8 urgent requests</small>
+                </button>
+                <button class="quick-action" onclick="showDocumentVerification()">
+                    <i class="fas fa-certificate"></i>
+                    <span>Document Verification</span>
+                    <small>12 documents pending</small>
+                </button>
+                <button class="quick-action" onclick="showReports()">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Generate Reports</span>
+                    <small>Monthly, Weekly, Custom</small>
+                </button>
+                <button class="quick-action" onclick="showAnnouncements()">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Announcements</span>
+                    <small>Create public notice</small>
+                </button>
+            </div>
+        </div>
+
+        <!-- Department Overview -->
+        <div class="department-overview">
+            <h4>Department Overview</h4>
+            <div class="dept-stats">
+                <div class="dept-metric">
+                    <div class="metric-header">
+                        <i class="fas fa-clock"></i>
+                        <span>Average Resolution Time</span>
+                    </div>
+                    <div class="metric-value">2.3 days</div>
+                    <div class="metric-change positive">-0.5 days vs last month</div>
+                </div>
+                <div class="dept-metric">
+                    <div class="metric-header">
+                        <i class="fas fa-star"></i>
+                        <span>Citizen Satisfaction</span>
+                    </div>
+                    <div class="metric-value">4.6/5</div>
+                    <div class="metric-change positive">+0.2 vs last month</div>
+                </div>
+                <div class="dept-metric">
+                    <div class="metric-header">
+                        <i class="fas fa-percentage"></i>
+                        <span>First Contact Resolution</span>
+                    </div>
+                    <div class="metric-value">78%</div>
+                    <div class="metric-change positive">+5% vs last month</div>
+                </div>
+                <div class="dept-metric">
+                    <div class="metric-header">
+                        <i class="fas fa-users-cog"></i>
+                        <span>Team Utilization</span>
+                    </div>
+                    <div class="metric-value">85%</div>
+                    <div class="metric-change neutral">Same as last month</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Enhanced Complaint Categories -->
+        <div class="complaint-categories">
+            <div class="category-header">
+                <h4>Complaints by Category</h4>
+                <div class="category-filters">
+                    <select id="complaint-filter" onchange="filterComplaintCategories()">
+                        <option value="all">All Departments</option>
+                        <option value="high-priority">High Priority</option>
+                        <option value="overdue">Overdue</option>
+                        <option value="today">Today's</option>
+                    </select>
+                    <button class="filter-btn" onclick="showComplaintAnalytics()">
+                        <i class="fas fa-chart-pie"></i> Analytics
+                    </button>
+                </div>
+            </div>
+            <div class="category-grid">
+                <div class="category-item" onclick="viewDeptComplaints('education')">
+                    <div class="category-icon education">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="category-details">
+                        <h5>Education</h5>
+                        <div class="category-stats">
+                            <span class="total">28 total</span>
+                            <span class="pending">8 pending</span>
+                            <span class="urgent">2 urgent</span>
+                        </div>
+                        <div class="category-trend">
+                            <span class="trend-indicator up">↑ 12%</span>
+                            <span class="avg-time">2.1 days avg</span>
+                        </div>
+                    </div>
+                    <div class="category-actions">
+                        <button class="quick-assign" onclick="quickAssign('education', event)">
+                            <i class="fas fa-user-plus"></i>
+                        </button>
+                        <button class="bulk-action" onclick="bulkAction('education', event)">
+                            <i class="fas fa-tasks"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="category-item" onclick="viewDeptComplaints('health')">
+                    <div class="category-icon health">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="category-details">
+                        <h5>Health</h5>
+                        <div class="category-stats">
+                            <span class="total">19 total</span>
+                            <span class="pending">3 pending</span>
+                            <span class="urgent">1 urgent</span>
+                        </div>
+                        <div class="category-trend">
+                            <span class="trend-indicator down">↓ 5%</span>
+                            <span class="avg-time">1.8 days avg</span>
+                        </div>
+                    </div>
+                    <div class="category-actions">
+                        <button class="quick-assign" onclick="quickAssign('health', event)">
+                            <i class="fas fa-user-plus"></i>
+                        </button>
+                        <button class="bulk-action" onclick="bulkAction('health', event)">
+                            <i class="fas fa-tasks"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="category-item" onclick="viewDeptComplaints('police')">
+                    <div class="category-icon police">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="category-details">
+                        <h5>Police</h5>
+                        <div class="category-stats">
+                            <span class="total">15 total</span>
+                            <span class="pending">5 pending</span>
+                            <span class="urgent">3 urgent</span>
+                        </div>
+                        <div class="category-trend">
+                            <span class="trend-indicator up">↑ 8%</span>
+                            <span class="avg-time">1.5 days avg</span>
+                        </div>
+                    </div>
+                    <div class="category-actions">
+                        <button class="quick-assign" onclick="quickAssign('police', event)">
+                            <i class="fas fa-user-plus"></i>
+                        </button>
+                        <button class="bulk-action" onclick="bulkAction('police', event)">
+                            <i class="fas fa-tasks"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="category-item" onclick="viewDeptComplaints('transport')">
+                    <div class="category-icon transport">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <div class="category-details">
+                        <h5>Transport</h5>
+                        <div class="category-stats">
+                            <span class="total">22 total</span>
+                            <span class="pending">7 pending</span>
+                            <span class="urgent">1 urgent</span>
+                        </div>
+                        <div class="category-trend">
+                            <span class="trend-indicator neutral">→ 0%</span>
+                            <span class="avg-time">3.2 days avg</span>
+                        </div>
+                    </div>
+                    <div class="category-actions">
+                        <button class="quick-assign" onclick="quickAssign('transport', event)">
+                            <i class="fas fa-user-plus"></i>
+                        </button>
+                        <button class="bulk-action" onclick="bulkAction('transport', event)">
+                            <i class="fas fa-tasks"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="category-item" onclick="viewDeptComplaints('municipal')">
+                    <div class="category-icon municipal">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <div class="category-details">
+                        <h5>Municipal</h5>
+                        <div class="category-stats">
+                            <span class="total">31 total</span>
+                            <span class="pending">12 pending</span>
+                            <span class="urgent">4 urgent</span>
+                        </div>
+                        <div class="category-trend">
+                            <span class="trend-indicator up">↑ 15%</span>
+                            <span class="avg-time">2.8 days avg</span>
+                        </div>
+                    </div>
+                    <div class="category-actions">
+                        <button class="quick-assign" onclick="quickAssign('municipal', event)">
+                            <i class="fas fa-user-plus"></i>
+                        </button>
+                        <button class="bulk-action" onclick="bulkAction('municipal', event)">
+                            <i class="fas fa-tasks"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="category-item" onclick="viewDeptComplaints('revenue')">
+                    <div class="category-icon revenue">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="category-details">
+                        <h5>Revenue</h5>
+                        <div class="category-stats">
+                            <span class="total">18 total</span>
+                            <span class="pending">4 pending</span>
+                            <span class="urgent">0 urgent</span>
+                        </div>
+                        <div class="category-trend">
+                            <span class="trend-indicator down">↓ 3%</span>
+                            <span class="avg-time">2.5 days avg</span>
+                        </div>
+                    </div>
+                    <div class="category-actions">
+                        <button class="quick-assign" onclick="quickAssign('revenue', event)">
+                            <i class="fas fa-user-plus"></i>
+                        </button>
+                        <button class="bulk-action" onclick="bulkAction('revenue', event)">
+                            <i class="fas fa-tasks"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="recent-activities">
+            <h4>Recent Activities</h4>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p><strong>Complaint #12847</strong> resolved by John Doe</p>
+                        <span class="activity-time">2 minutes ago</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p><strong>New scheme application</strong> submitted for review</p>
+                        <span class="activity-time">15 minutes ago</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p><strong>Urgent complaint</strong> assigned to your department</p>
+                        <span class="activity-time">1 hour ago</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p><strong>Team meeting</strong> scheduled for tomorrow 10 AM</p>
+                        <span class="activity-time">3 hours ago</span>
+                    </div>
+                </div>
+            </div>
+            <button class="view-all-btn" onclick="showAllActivities()">
+                View All Activities
             </button>
         </div>
-        
-        <div class="official-stats">
-            <div class="stat-card">
-                <i class="fas fa-inbox"></i>
-                <div>
-                    <span class="stat-number">12</span>
-                    <p>Pending Complaints</p>
-                </div>
+    </div>
+
+    <!-- Complaint Management Screen -->
+    <div id="complaint-management" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Complaint Management</h2>
+            <div class="header-actions">
+                <button class="filter-btn" onclick="showComplaintFilters()">
+                    <i class="fas fa-filter"></i> Filters
+                </button>
+                <button class="export-btn" onclick="exportComplaints()">
+                    <i class="fas fa-download"></i> Export
+                </button>
             </div>
-            <div class="stat-card">
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <span class="stat-number">45</span>
-                    <p>Resolved This Month</p>
+        </div>
+
+        <div class="complaint-filters-panel">
+            <div class="filter-row">
+                <select id="status-filter" onchange="applyComplaintFilters()">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="resolved">Resolved</option>
+                    <option value="closed">Closed</option>
+                </select>
+                <select id="priority-filter" onchange="applyComplaintFilters()">
+                    <option value="">All Priorities</option>
+                    <option value="urgent">Urgent</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+                <select id="dept-filter" onchange="applyComplaintFilters()">
+                    <option value="">All Departments</option>
+                    <option value="education">Education</option>
+                    <option value="health">Health</option>
+                    <option value="police">Police</option>
+                    <option value="transport">Transport</option>
+                </select>
+                <input type="date" id="date-filter" onchange="applyComplaintFilters()" placeholder="Date">
+            </div>
+            <div class="bulk-actions">
+                <button class="bulk-btn" onclick="bulkAssign()">
+                    <i class="fas fa-user-plus"></i> Bulk Assign
+                </button>
+                <button class="bulk-btn" onclick="bulkStatusUpdate()">
+                    <i class="fas fa-edit"></i> Update Status
+                </button>
+                <button class="bulk-btn" onclick="bulkEscalate()">
+                    <i class="fas fa-arrow-up"></i> Escalate
+                </button>
+            </div>
+        </div>
+
+        <div class="complaints-list">
+            <div class="complaint-item">
+                <div class="complaint-checkbox">
+                    <input type="checkbox" id="complaint-1">
+                </div>
+                <div class="complaint-priority urgent">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="complaint-details">
+                    <div class="complaint-header">
+                        <h4>#C12847 - Teacher Absence Issue</h4>
+                        <span class="complaint-time">2 hours ago</span>
+                    </div>
+                    <p>School teacher has been absent for 3 consecutive days without notice...</p>
+                    <div class="complaint-meta">
+                        <span class="department">Education</span>
+                        <span class="location">Government Primary School, Village ABC</span>
+                        <span class="citizen">Reported by: Ram Kumar</span>
+                    </div>
+                </div>
+                <div class="complaint-status">
+                    <select onchange="updateComplaintStatus(1, this.value)">
+                        <option value="pending" selected>Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+                <div class="complaint-actions">
+                    <button class="action-btn" onclick="viewComplaintDetails(1)" title="View Details">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="action-btn" onclick="assignComplaint(1)" title="Assign">
+                        <i class="fas fa-user-plus"></i>
+                    </button>
+                    <button class="action-btn" onclick="addComplaintNote(1)" title="Add Note">
+                        <i class="fas fa-sticky-note"></i>
+                    </button>
+                    <button class="action-btn" onclick="escalateComplaint(1)" title="Escalate">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
                 </div>
             </div>
         </div>
-        
-        <div class="complaint-categories">
-            <h4>Complaints by Category</h4>
-            <div class="category-list">
-                <div class="category-item" onclick="viewComplaints('education')">
-                    <i class="fas fa-graduation-cap"></i>
-                    <div>
-                        <h5>Education</h5>
-                        <span class="count">8 pending</span>
+    </div>
+
+    <!-- Scheme Applications Screen -->
+    <div id="scheme-applications" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Scheme Applications</h2>
+            <div class="header-actions">
+                <button class="filter-btn" onclick="showApplicationFilters()">
+                    <i class="fas fa-filter"></i> Filters
+                </button>
+                <button class="stats-btn" onclick="showApplicationStats()">
+                    <i class="fas fa-chart-bar"></i> Statistics
+                </button>
+            </div>
+        </div>
+
+        <div class="application-summary">
+            <div class="summary-card">
+                <h4>Pending Review</h4>
+                <span class="summary-count">15</span>
+                <small>Requires immediate attention</small>
+            </div>
+            <div class="summary-card">
+                <h4>Under Verification</h4>
+                <span class="summary-count">8</span>
+                <small>Document verification in progress</small>
+            </div>
+            <div class="summary-card">
+                <h4>Approved Today</h4>
+                <span class="summary-count">12</span>
+                <small>Ready for disbursement</small>
+            </div>
+            <div class="summary-card">
+                <h4>Rejected</h4>
+                <span class="summary-count">3</span>
+                <small>With reasons provided</small>
+            </div>
+        </div>
+
+        <div class="applications-list">
+            <div class="application-item">
+                <div class="application-info">
+                    <div class="applicant-details">
+                        <h4>PM-KISAN Application</h4>
+                        <p><strong>Applicant:</strong> Sunita Devi</p>
+                        <p><strong>Aadhaar:</strong> ****-****-9876</p>
+                        <p><strong>Applied:</strong> 2 days ago</p>
+                    </div>
+                    <div class="application-documents">
+                        <span class="doc-status verified">Aadhaar ✓</span>
+                        <span class="doc-status verified">Land Records ✓</span>
+                        <span class="doc-status pending">Bank Details ⏳</span>
                     </div>
                 </div>
-                <div class="category-item" onclick="viewComplaints('health')">
-                    <i class="fas fa-heartbeat"></i>
-                    <div>
-                        <h5>Health</h5>
-                        <span class="count">3 pending</span>
+                <div class="application-actions">
+                    <button class="approve-btn" onclick="approveApplication('123')">
+                        <i class="fas fa-check"></i> Approve
+                    </button>
+                    <button class="reject-btn" onclick="rejectApplication('123')">
+                        <i class="fas fa-times"></i> Reject
+                    </button>
+                    <button class="review-btn" onclick="reviewApplication('123')">
+                        <i class="fas fa-eye"></i> Review
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reports and Analytics Screen -->
+    <div id="reports-analytics" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Reports & Analytics</h2>
+            <div class="header-actions">
+                <button class="generate-btn" onclick="generateCustomReport()">
+                    <i class="fas fa-plus"></i> Custom Report
+                </button>
+            </div>
+        </div>
+
+        <div class="report-types">
+            <div class="report-category">
+                <h4>Performance Reports</h4>
+                <div class="report-list">
+                    <div class="report-item" onclick="generateReport('complaint-resolution')">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <h5>Complaint Resolution</h5>
+                            <p>Track resolution times and efficiency</p>
+                        </div>
                     </div>
+                    <div class="report-item" onclick="generateReport('citizen-satisfaction')">
+                        <i class="fas fa-star"></i>
+                        <div>
+                            <h5>Citizen Satisfaction</h5>
+                            <p>Feedback and rating analysis</p>
+                        </div>
+                    </div>
+                    <div class="report-item" onclick="generateReport('department-performance')">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <div>
+                            <h5>Department Performance</h5>
+                            <p>Cross-department comparison</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-category">
+                <h4>Scheme Reports</h4>
+                <div class="report-list">
+                    <div class="report-item" onclick="generateReport('scheme-applications')">
+                        <i class="fas fa-file-alt"></i>
+                        <div>
+                            <h5>Application Status</h5>
+                            <p>Pending, approved, rejected analysis</p>
+                        </div>
+                    </div>
+                    <div class="report-item" onclick="generateReport('beneficiary-analysis')">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h5>Beneficiary Analysis</h5>
+                            <p>Demographics and distribution</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-category">
+                <h4>Financial Reports</h4>
+                <div class="report-list">
+                    <div class="report-item" onclick="generateReport('budget-utilization')">
+                        <i class="fas fa-rupee-sign"></i>
+                        <div>
+                            <h5>Budget Utilization</h5>
+                            <p>Scheme-wise budget analysis</p>
+                        </div>
+                    </div>
+                    <div class="report-item" onclick="generateReport('disbursement-tracking')">
+                        <i class="fas fa-money-check-alt"></i>
+                        <div>
+                            <h5>Disbursement Tracking</h5>
+                            <p>Payment status and delays</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Verification Screen -->
+    <div id="document-verification" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Document Verification</h2>
+            <div class="header-actions">
+                <button class="batch-btn" onclick="batchVerification()">
+                    <i class="fas fa-tasks"></i> Batch Process
+                </button>
+            </div>
+        </div>
+
+        <div class="verification-queue">
+            <div class="queue-stats">
+                <div class="queue-stat">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">Pending Verification</span>
+                </div>
+                <div class="queue-stat">
+                    <span class="stat-number">45</span>
+                    <span class="stat-label">Verified Today</span>
+                </div>
+                <div class="queue-stat">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Flagged for Review</span>
+                </div>
+            </div>
+
+            <div class="document-queue">
+                <div class="document-verification-item">
+                    <div class="document-preview">
+                        <div class="doc-thumbnail">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div class="doc-details">
+                            <h4>Aadhaar Card Verification</h4>
+                            <p><strong>Citizen:</strong> Rajesh Kumar</p>
+                            <p><strong>Document ID:</strong> ****-****-8765</p>
+                            <p><strong>Submitted:</strong> 1 hour ago</p>
+                        </div>
+                    </div>
+                    <div class="verification-actions">
+                        <button class="verify-btn" onclick="verifyDocument('doc1', 'approved')">
+                            <i class="fas fa-check"></i> Verify
+                        </button>
+                        <button class="reject-btn" onclick="verifyDocument('doc1', 'rejected')">
+                            <i class="fas fa-times"></i> Reject
+                        </button>
+                        <button class="review-btn" onclick="flagForReview('doc1')">
+                            <i class="fas fa-flag"></i> Flag
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Citizen Management Screen -->
+    <div id="citizen-management" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Citizen Management</h2>
+            <div class="header-actions">
+                <input type="text" id="citizen-search" placeholder="Search by name, phone, or Aadhaar...">
+                <button class="search-btn" onclick="searchCitizens()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="citizen-stats">
+            <div class="citizen-stat">
+                <span class="stat-number">1,247</span>
+                <span class="stat-label">Total Citizens</span>
+            </div>
+            <div class="citizen-stat">
+                <span class="stat-number">89</span>
+                <span class="stat-label">Active This Month</span>
+            </div>
+            <div class="citizen-stat">
+                <span class="stat-number">23</span>
+                <span class="stat-label">Need Assistance</span>
+            </div>
+        </div>
+
+        <div class="citizens-list">
+            <div class="citizen-profile">
+                <div class="citizen-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="citizen-info">
+                    <h4>Priya Sharma</h4>
+                    <p><strong>Phone:</strong> +91-9876543210</p>
+                    <p><strong>Location:</strong> Ward 12, Sector 15</p>
+                    <p><strong>Last Active:</strong> 2 days ago</p>
+                </div>
+                <div class="citizen-services">
+                    <span class="service-count">3 Complaints Filed</span>
+                    <span class="service-count">2 Schemes Applied</span>
+                    <span class="service-count">5 Documents Uploaded</span>
+                </div>
+                <div class="citizen-actions">
+                    <button class="action-btn" onclick="viewCitizenProfile('citizen1')">
+                        <i class="fas fa-eye"></i> Profile
+                    </button>
+                    <button class="action-btn" onclick="contactCitizen('citizen1')">
+                        <i class="fas fa-phone"></i> Contact
+                    </button>
+                    <button class="action-btn" onclick="assistCitizen('citizen1')">
+                        <i class="fas fa-hands-helping"></i> Assist
+                    </button>
                 </div>
             </div>
         </div>
@@ -691,9 +1832,17 @@
                     <i class="fas fa-fingerprint"></i>
                     Fingerprint
                 </button>
+                <button class="security-btn" onclick="authenticateFaceID()">
+                    <i class="fas fa-user-check"></i>
+                    Face ID
+                </button>
                 <button class="security-btn" onclick="showPinInput()">
                     <i class="fas fa-lock"></i>
                     PIN
+                </button>
+                <button class="security-btn" onclick="showPasswordInput()">
+                    <i class="fas fa-key"></i>
+                    Password
                 </button>
             </div>
         </div>
@@ -714,6 +1863,45 @@
                 <button class="secondary-btn" type="button" onclick="closeAddDocument()">Cancel</button>
                 <button class="primary-btn" type="button" onclick="confirmAddDocuments()">Add</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Additional Modals for new features -->
+    <div id="eligibility-modal" class="modal">
+        <div class="modal-content">
+            <h3>Eligibility Checker</h3>
+            <div class="eligibility-form">
+                <div class="input-group">
+                    <label>Age</label>
+                    <input type="number" id="user-age" placeholder="Enter your age">
+                </div>
+                <div class="input-group">
+                    <label>Annual Income</label>
+                    <select id="user-income">
+                        <option value="bpl">Below Poverty Line</option>
+                        <option value="low">₹0 - ₹2 Lakhs</option>
+                        <option value="middle">₹2 - ₹8 Lakhs</option>
+                        <option value="high">Above ₹8 Lakhs</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Category</label>
+                    <select id="user-category">
+                        <option value="general">General</option>
+                        <option value="obc">OBC</option>
+                        <option value="sc">SC</option>
+                        <option value="st">ST</option>
+                    </select>
+                </div>
+                <button class="primary-btn" onclick="checkEligibility()">
+                    Check Eligibility
+                </button>
+            </div>
+            <div id="eligibility-results" style="display:none;">
+                <h4>Eligible Schemes</h4>
+                <div id="eligible-schemes-list"></div>
+            </div>
+            <button class="close-btn" onclick="closeModal('eligibility-modal')">Close</button>
         </div>
     </div>
 

@@ -1,3 +1,13 @@
 {
-    "documents": []
+    "documents": [
+        {
+            "id": 1,
+            "user_id": "2",
+            "name": "OS_in_6_hours_lyst1728638298326.pdf",
+            "original_name": "OS_in_6_hours_lyst1728638298326.pdf",
+            "path": "uploads\\2/OS_in_6_hours_lyst1728638298326.pdf",
+            "type": "certificates",
+            "uploadDate": "2025-09-09"
+        }
+    ]
 }
