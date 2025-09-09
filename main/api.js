@@ -160,3 +160,16 @@ function documentViewUrl(docId) {
 function documentDownloadUrl(docId) {
     return API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.DOCUMENTS + `/${docId}/download`;
 }
+
+async function deleteDocumentApi(docId) {
+    try {
+        const res = await fetch(API_CONFIG.BASE_URL + API_CONFIG.ENDPOINTS.DOCUMENTS + `/${docId}`, {
+            method: 'DELETE'
+        });
+        if (!res.ok) throw new Error('Delete failed');
+        return await res.json();
+    } catch (e) {
+        console.error('Delete error:', e);
+        return { success: false };
+    }
+}

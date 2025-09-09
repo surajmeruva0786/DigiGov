@@ -953,6 +953,21 @@ function downloadDocumentById(docId) {
     a.remove();
 }
 
+function deleteDocumentById(docId) {
+    if (!confirm('Delete this document? This action cannot be undone.')) return;
+    deleteDocumentApi(docId).then(res => {
+        if (res?.success) {
+            // Remove from local list and re-render
+            documents = (documents || []).filter(d => d.id !== docId);
+            saveLocalData();
+            renderDocuments();
+            showNotification('Document deleted', 'success');
+        } else {
+            showNotification('Failed to delete document', 'error');
+        }
+    });
+}
+
 // Add Document Modal Logic
 let pendingSelectedFiles = [];
 
@@ -1070,6 +1085,9 @@ function renderDocuments() {
                 </button>
                 <button class="icon-btn" onclick="downloadDocumentById(${doc.id})">
                     <i class="fas fa-download"></i>
+                </button>
+                <button class="icon-btn" onclick="deleteDocumentById(${doc.id})">
+                    <i class="fas fa-trash"></i>
                 </button>
             </div>
         `;

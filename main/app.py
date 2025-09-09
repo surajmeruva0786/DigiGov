@@ -224,6 +224,32 @@ def view_document(doc_id: int):
         print('View error:', e)
         return jsonify({"success": False, "message": "View failed"}), 500
 
+@app.route('/api/documents/<int:doc_id>', methods=['DELETE'])
+def delete_document(doc_id: int):
+    try:
+        data = load_documents()
+        docs = data.get('documents', [])
+        idx = next((i for i, d in enumerate(docs) if int(d.get('id', -1)) == doc_id), -1)
+        if idx == -1:
+            return jsonify({"success": False, "message": "Not found"}), 404
+        record = docs[idx]
+        path = record.get('path')
+        # Remove file if it exists
+        try:
+            if path and os.path.exists(path):
+                os.remove(path)
+        except Exception as fe:
+            print('File delete warning:', fe)
+        # Remove from metadata and save
+        docs.pop(idx)
+        data['documents'] = docs
+        save_documents(data)
+        return jsonify({"success": True})
+    except Exception as e:
+        print('Delete error:', e)
+        traceback.print_exc()
+        return jsonify({"success": False, "message": "Delete failed"}), 500
+
 
 @app.route('/api/official/register', methods=['POST'])
 def handle_official_register():
